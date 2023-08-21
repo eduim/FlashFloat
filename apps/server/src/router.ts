@@ -1,5 +1,8 @@
 import express from 'express'
+import uploadController from './controllers/uploads.controller'
+import multer from 'multer'
 
+const uploadMulter = multer({ dest: '../uploads' })
 const router = express.Router()
 
 router.get('/', (_, res) => {
@@ -7,7 +10,6 @@ router.get('/', (_, res) => {
   return res.status(200).json('hello')
 })
 
-router.post('/users', usersController.getUser)
-router.post('/upload', uploadController.newUpload)
+router.post('/upload', uploadMulter.single('file'), uploadController.upload)
 
 export default router
