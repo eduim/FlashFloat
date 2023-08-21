@@ -1,19 +1,16 @@
 import { useState } from "react";
 
 function UploaderForm() {
-  const [formData, setFormData] = useState({
-    emailTo: "",
-    YourEmail: "",
-    Title: "",
-    Message: "",
-  });
-  //WE NEED TO TYPE THE ARGUMENTS
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData(event.target.value);
-  };
-  //WE NEED TO TYPE THE ARGUMENTS
-  const handleTransfer = (event) => {
+  const [emailTo, setEmailTo] = useState<string>("");
+  const [yourEmail, setYourEmail] = useState<string>("");
+  const [title, setTitle] = useState<string>("");
+  const [message, setMessage] = useState<string>("");
+  const handleTransfer = async(event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
+
+    try{
+      const uploadData = await fetch('http://localuser:localhost:8080/upload')
+    }
   };
   return (
     <div>
@@ -22,29 +19,29 @@ function UploaderForm() {
         <input
           type="text"
           name="emailTo"
-          value={formData.EmailTo}
-          onChange={handleChange}
+          value={emailTo}
+          onChange={(e) => setEmailTo(e.target.value)}
         />
         <label>Your Email </label>
         <input
           type="text"
           name="YourEmail"
-          value={formData.YourEmail}
-          onChange={handleChange}
+          value={yourEmail}
+          onChange={(e) => setYourEmail(e.target.value)}
         />
         <label>Title </label>
         <input
           type="text"
           name="Title"
-          value={formData.Title}
-          onChange={handleChange}
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
         />
         <label>Message </label>
         <input
           type="text"
-          name="Message"
-          value={formData.Messager}
-          onChange={handleChange}
+          name="message"
+          value={message}
+          onChange={(e) => setMessage(e.target.value)}
         />
         <button type="submit">Transfer</button>
       </form>
