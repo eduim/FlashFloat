@@ -1,16 +1,24 @@
 import express from 'express'
-import router from './router'
+import multer from 'multer'
+import morgan from 'morgan'
+//import router from './router'
 // import { PORT } from './lib/constants'
 // import { Request, Response } from 'express'
 const app = express()
+const upload = multer({
+  dest: 'files/',
+})
 
-// app.get('/', (req: Request, res: Response) => {
-//   console.log(req.body)
-//   res.send('Express + TypeScript Server')
-// })
-app.use(express.json())
+app.use(morgan('tiny'))
 
-app.use(router)
+app.post('/uploads', upload.any(), (req, res) => {
+  //send the file to local storage for saving and get a link back
+  //add the link to the rest of the body of the request
+  //sent the rest of the body plus link to be stored in the postgress db
+  console.log(req.body)
+  console.log(req.file)
+  res.status(201).json('You file upload has been successful')
+})
 
 const startServer = () => {
   const PORT = process.env.PORT ?? 8080
