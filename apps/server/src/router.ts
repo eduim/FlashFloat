@@ -2,7 +2,7 @@ import express from 'express'
 import uploadController from './controllers/uploads.controller'
 import multer from 'multer'
 
-const upload = multer({ dest: 'uploads/' })
+const upload = multer({ dest: './src/uploads/' })
 
 const router = express.Router()
 

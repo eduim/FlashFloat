@@ -25,7 +25,6 @@ model File {
   size         Int
   typeOfFile   String
   path         String
-  expiresAt    DateTime
   uploadId     Int 
   upload       Upload        @relation(fields: [uploadId], references: [id])
 }
@@ -36,6 +35,7 @@ model Upload {
   title        String
   message      String
   files        File[]
+  expiresAt    DateTime
   uploader     User          @relation(name: "uploaderRelation", fields: [uploaderId], references: [id])
   uploaderId   Int
   downloader   User          @relation(name: "downloaderRelation", fields: [downloaderId], references: [id])

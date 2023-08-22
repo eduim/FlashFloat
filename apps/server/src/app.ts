@@ -1,19 +1,16 @@
 import express from 'express'
 import router from './router'
-// import { PORT } from './lib/constants'
-// import { Request, Response } from 'express'
+import cors from 'cors'
+import { PORT } from './lib/constants'
+
 const app = express()
 
-// app.get('/', (req: Request, res: Response) => {
-//   console.log(req.body)
-//   res.send('Express + TypeScript Server')
-// })
+app.use(cors())
 app.use(express.json())
 
 app.use(router)
 
 const startServer = () => {
-  const PORT = process.env.PORT ?? 8080
   const server = app.listen(PORT, () => {
     console.log(`🚀Server running and listening on http://localhost:${PORT}`)
   })
