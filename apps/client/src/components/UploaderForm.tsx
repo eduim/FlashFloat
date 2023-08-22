@@ -31,7 +31,7 @@ function UploaderForm() {
           method: "POST",
           body: uploadData,
         });
-        if (uploadResponse.status === 200) {
+        if (uploadResponse.status === 201) {
           console.log("Your upload has been sent");
         }
       }
