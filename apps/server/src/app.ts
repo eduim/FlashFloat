@@ -5,11 +5,11 @@ import morgan from 'morgan'
 // import { PORT } from './lib/constants'
 // import { Request, Response } from 'express'
 const app = express()
+app.use(morgan('tiny'))
+
 const upload = multer({
   dest: 'files/',
 })
-
-app.use(morgan('tiny'))
 
 app.post('/uploads', upload.any(), (req, res) => {
   //send the file to local storage for saving and get a link back
