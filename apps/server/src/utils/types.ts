@@ -8,6 +8,4 @@ export type Upload = {
     email: string
   }
   file: File[]
-
-
 }
