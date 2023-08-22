@@ -47,7 +47,7 @@ function UploaderForm() {
         onSubmit={handleTransfer}
       >
         <label
-          className="bg-cyan-400 p-1 border rounded-md border-1"
+          className="bg-cyan-400 px-3 py-2 mb-6 border rounded-md border-black border-1 "
           htmlFor=""
         >
           Upload File
