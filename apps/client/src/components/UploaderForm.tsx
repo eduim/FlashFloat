@@ -1,4 +1,7 @@
 import React, { useState } from "react";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 
 function UploaderForm() {
   const [emailTo, setEmailTo] = useState<string>("");
@@ -20,20 +23,17 @@ function UploaderForm() {
     uploadData.append("yourEmail", yourEmail);
     uploadData.append("title", title);
     uploadData.append("message", message);
-    if (fileUpload) {
-      uploadData.append("fileUpload", fileUpload);
-    }
-
     try {
-      const uploadResponse = await fetch(
-        "http://localuser:localhost:8080/upload",
-        {
+      if (fileUpload) {
+        uploadData.append("fileUpload", fileUpload);
+        console.log("here");
+        const uploadResponse = await fetch("http://localhost:8080/upload", {
           method: "POST",
           body: uploadData,
+        });
+        if (uploadResponse.status === 201) {
+          console.log("Your upload has been sent");
         }
-      );
-      if (uploadResponse.status === 200) {
-        console.log("Your upload has been sent");
       }
     } catch (error) {
       console.error("Transfer failed");
@@ -41,63 +41,56 @@ function UploaderForm() {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center h-screen ">
+    <div className="">
       <form
-        className="border p-12 border-cyan-400 rounded-xl"
+        className="flex flex-col gap-5 justify-center items-center h-screen max-w-md border p-12 black rounded-xl"
         onSubmit={handleTransfer}
       >
-        <label
-          className="bg-cyan-400 px-3 py-2 mb-6 border rounded-md border-black border-1 "
-          htmlFor=""
-        >
-          Upload File
-        </label>
-        <br />
-        <input type="file" name="fileUpload" onChange={handleFileChange} />
-        <br />
-        <br />
-        <label>Email to</label>
-        <br />
-        <input
+        <Label htmlFor="">Upload File</Label>
+
+        <Input type="file" name="fileUpload" onChange={handleFileChange} />
+        <Label>Email to</Label>
+
+        <Input
           type="text"
           name="emailTo"
           value={emailTo}
           onChange={(e) => setEmailTo(e.target.value)}
         />
         <br />
-        <label>Your Email</label>
+        <Label>Your Email</Label>
         <br />
-        <input
+        <Input
           type="text"
           name="YourEmail"
           value={yourEmail}
           onChange={(e) => setYourEmail(e.target.value)}
         />
         <br />
-        <label>Title</label>
+        <Label>Title</Label>
         <br />
-        <input
+        <Input
           type="text"
           name="Title"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
         />
         <br />
-        <label>Message</label>
+        <Label>Message</Label>
         <br />
-        <input
+        <Input
           type="text"
           name="message"
           value={message}
           onChange={(e) => setMessage(e.target.value)}
         />
         <br />
-        <button
+        <Button
           className="bg-slate-600 rounded-md py-1 px-4 text-white"
           type="submit"
         >
           Transfer
-        </button>
+        </Button>
       </form>
     </div>
   );
