@@ -1,42 +1,59 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
 function UploaderForm() {
   const [emailTo, setEmailTo] = useState<string>("");
   const [yourEmail, setYourEmail] = useState<string>("");
   const [title, setTitle] = useState<string>("");
   const [message, setMessage] = useState<string>("");
+  const [fileUpload, setFileUpload] = useState<File | null>(null);
 
-  const [fetchedData, setFetchedData] = useState<any>(null);
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files.length > 0) {
+      setFileUpload(event.target.files[0]);
+    }
+  };
+  const handleTransfer = async (event: React.ChangeEvent<HTMLFormElement>) => {
+    event.preventDefault();
 
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const response = await fetch(
-          "https://jsonplaceholder.typicode.com/posts/1"
-        );
-        const data = await response.json();
-        setFetchedData(data);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
+    const uploadData = new FormData();
+    uploadData.append("emailTo", emailTo);
+    uploadData.append("yourEmail", yourEmail);
+    uploadData.append("title", title);
+    uploadData.append("message", message);
+    if (fileUpload) {
+      uploadData.append("fileUpload", fileUpload);
     }
 
-    fetchData();
-  }, []);
-
-  const handleTransfer = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    event.preventDefault();
-    // Your transfer logic here
+    try {
+      const uploadResponse = await fetch(
+        "http://localuser:localhost:8080/upload",
+        {
+          method: "POST",
+          body: uploadData,
+        }
+      );
+      if (uploadResponse.status === 200) {
+        console.log("Your upload has been sent");
+      }
+    } catch (error) {
+      console.error("Transfer failed");
+    }
   };
 
   return (
-    <div className="flex flex-col justify-center items-center h-screen">
-      <form className="border p-12 border-cyan-400 rounded-xl">
-        <label className="bg-cyan-400 p-1 border rounded-md border-1">
+    <div className="flex flex-col justify-center items-center h-screen ">
+      <form
+        className="border p-12 border-cyan-400 rounded-xl"
+        onSubmit={handleTransfer}
+      >
+        <label
+          className="bg-cyan-400 px-3 py-2 mb-6 border rounded-md border-black border-1 "
+          htmlFor=""
+        >
           Upload File
         </label>
         <br />
-        <input type="file" />
+        <input type="file" name="fileUpload" onChange={handleFileChange} />
         <br />
         <br />
         <label>Email to</label>
@@ -78,18 +95,10 @@ function UploaderForm() {
         <button
           className="bg-slate-600 rounded-md py-1 px-4 text-white"
           type="submit"
-          onClick={handleTransfer}
         >
           Transfer
         </button>
       </form>
-
-      {fetchedData && (
-        <div className="mt-4">
-          <h2>Fetched Data</h2>
-          <pre>{JSON.stringify(fetchedData, null, 2)}</pre>
-        </div>
-      )}
     </div>
   );
 }
