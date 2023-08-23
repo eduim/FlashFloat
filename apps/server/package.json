@@ -9,7 +9,11 @@
     "build": "tsc",
     "predev": "docker-compose up -d db",
     "dev": "nodemon src/index.ts",
-    "lint": "eslint ./src/**"
+    "lint": "eslint ./src/**",
+    "docker:test": "docker-compose -f docker-compose.test.yml up -d --remove-orphans",
+    "pretest": "yarn docker:test && dotenv -e .env.test -- prisma migrate deploy",
+    "test": "dotenv -e .env.test -- vitest run",
+    "posttest": "docker rm db_test --force"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.398.0",
@@ -35,11 +39,15 @@
     "@types/multer": "^1.4.7",
     "@types/node": "^20.5.0",
     "@types/uuid": "^9.0.2",
+    "@types/supertest": "^2.0.12",
     "@typescript-eslint/eslint-plugin": "^6.4.0",
     "@typescript-eslint/parser": "^6.4.0",
+    "dotenv-cli": "^7.3.0",
     "nodemon": "^3.0.1",
     "prisma": "^5.1.1",
+    "supertest": "^6.3.3",
     "ts-node": "^10.9.1",
-    "typescript": "^5.1.6"
+    "typescript": "^5.1.6",
+    "vitest": "^0.34.2"
   }
 }
