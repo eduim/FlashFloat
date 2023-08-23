@@ -9,7 +9,11 @@
     "build": "tsc",
     "predev": "docker-compose up -d db",
     "dev": "nodemon src/index.ts",
-    "lint": "eslint ./src/**"
+    "lint": "eslint ./src/**",
+    "docker:test": "docker-compose -f docker-compose.test.yml up -d",
+    "pretest": "yarn docker:test && dotenv -e .env.test -- prisma migrate deploy",
+    "test": "dotenv -e .env.test -- vitest run",
+    "posttest": "docker rm db_test --force"
   },
   "dependencies": {
     "@prisma/client": "5.1.1",
@@ -19,16 +23,20 @@
     "multer": "^1.4.5-lts.1"
   },
   "devDependencies": {
-    "@types/multer": "^1.4.7",
     "@types/cors": "^2.8.13",
     "@types/dotenv": "^8.2.0",
     "@types/express": "^4.17.17",
+    "@types/multer": "^1.4.7",
     "@types/node": "^20.5.0",
+    "@types/supertest": "^2.0.12",
     "@typescript-eslint/eslint-plugin": "^6.4.0",
     "@typescript-eslint/parser": "^6.4.0",
+    "dotenv-cli": "^7.3.0",
     "nodemon": "^3.0.1",
     "prisma": "^5.1.1",
+    "supertest": "^6.3.3",
     "ts-node": "^10.9.1",
-    "typescript": "^5.1.6"
+    "typescript": "^5.1.6",
+    "vitest": "^0.34.2"
   }
 }
