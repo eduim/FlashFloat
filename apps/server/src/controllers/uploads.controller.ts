@@ -10,7 +10,7 @@ const uploadController = {
   async upload(req: Request, res: Response) {
     try {
       const { emailTo, yourEmail, title, message } = req.body
-      const fileUpload = req.file
+      const fileUpload = req.files
 
       if (!fileUpload) {
         throw new Error('no file uploaded')
@@ -47,7 +47,7 @@ const uploadController = {
         expiresAt
       )
 
-      const rawFiles = [fileUpload]
+      const rawFiles = fileUpload as Express.Multer.File[]
       const files: FileType[] = []
 
       for (const file of rawFiles) {

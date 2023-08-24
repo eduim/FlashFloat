@@ -11,7 +11,7 @@ router.get('/', (_, res) => {
   return res.status(200).json('hello')
 })
 
-router.post('/upload', upload.single('fileUpload'), uploadController.upload)
+router.post('/upload', upload.array('fileUpload'), uploadController.upload)
 
 router.get('/download/:uploadId', downloadController.download)
 
