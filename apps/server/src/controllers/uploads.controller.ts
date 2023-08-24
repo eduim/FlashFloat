@@ -2,7 +2,7 @@ import { Request, Response } from 'express'
 import usersModel from '../models/users'
 import uploadModel from '../models/upload'
 import expiresAtDate from '../lib/expires'
-// import fs from 'node:fs'
+import generateRandomId from '../lib/randomId'
 import s3 from '../lib/s3'
 
 const uploadController = {
@@ -28,8 +28,10 @@ const uploadController = {
         throw new Error('Bad request.')
       }
 
+      console.log('here =================>')
       let uploader = await usersModel.find(emailTo)
       let downloader = await usersModel.find(yourEmail)
+      console.log('here 2 =================>')
 
       if (!uploader || !downloader) {
         uploader = await usersModel.create(yourEmail, 'UPLOADER')
@@ -45,22 +47,22 @@ const uploadController = {
         downloader.id,
         expiresAt
       )
+      const randomId = generateRandomId()
+      const rawFiles = [fileUpload]
+      const key = `${upload.id}/${randomId}`
 
-      const files = [fileUpload].map((file) => {
+      for (const file of rawFiles) {
+        await s3.upload(key, file.buffer)
+      }
+
+      const files = rawFiles.map((file) => {
         return {
           fileName: file?.originalname,
           size: file?.size,
           typeOfFile: file?.mimetype,
-          path: file?.path,
-          binary: file,
+          path: key,
         }
       })
-
-      for (const file of files) {
-        const key = `${uploader.id}/${downloader.id}/${upload.id}/${upload.id}`
-        console.log(key)
-        await s3.upload(key, file.binary.buffer)
-      }
 
       const updateUPload = await uploadModel.update(upload.id, files)
 

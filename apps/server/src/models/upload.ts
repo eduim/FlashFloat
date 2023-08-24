@@ -1,5 +1,5 @@
 import { PrismaClient, Upload } from '@prisma/client'
-
+import { FileType } from '../utils/types'
 const prismaInstance = new PrismaClient()
 
 const uploadModel = {
@@ -25,27 +25,27 @@ const uploadModel = {
             id: downloaderId,
           },
         },
-       
       },
     })
 
     return uploadFile
   },
 
-  async update(uploadId, files) {
+  async update(uploadId: number, files: FileType[]): Promise<Upload> {
     const updateUpload = await prismaInstance.upload.update({
       where: {
-        id: uploadId
-      }
+        id: uploadId,
+      },
       data: {
         files: {
           createMany: {
-            data: files 
-          }
-        }
-      }
+            data: files,
+          },
+        },
+      },
     })
-  }
+    return updateUpload
+  },
 }
 
 export default uploadModel

@@ -18,3 +18,13 @@ if (!process.env.BUCKET_NAME) {
 }
 
 export const BUCKET_NAME = process.env.BUCKET_NAME
+
+if (
+  !process.env.AWS_ACCESS_KEY_ID ||
+  !process.env.AWS_SECRET_ACCESS_KEY ||
+  !process.env.AWS_REGION
+) {
+  throw new Error(
+    'missing AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_REGION in .env file'
+  )
+}
