@@ -2,12 +2,11 @@ import express from 'express'
 import uploadController from './controllers/uploads.controller'
 import multer from 'multer'
 
-const upload = multer({ dest: './src/uploads/' })
+const upload = multer({ storage: multer.memoryStorage() })
 
 const router = express.Router()
 
 router.get('/', (_, res) => {
-  console.log('here===>')
   return res.status(200).json('hello')
 })
 

@@ -2,6 +2,8 @@ import { Request, Response } from 'express'
 import usersModel from '../models/users'
 import uploadModel from '../models/upload'
 import expiresAtDate from '../lib/expires'
+import generateRandomId from '../lib/randomId'
+import s3 from '../lib/s3'
 
 const uploadController = {
   async upload(req: Request, res: Response) {
@@ -13,6 +15,19 @@ const uploadController = {
         throw new Error('no file uploaded')
       }
 
+      if (!emailTo || !yourEmail || !title || !message) {
+        throw new Error('bad request')
+      }
+
+      if (
+        typeof emailTo !== 'string' ||
+        typeof yourEmail !== 'string' ||
+        typeof title !== 'string' ||
+        typeof message !== 'string'
+      ) {
+        throw new Error('Bad request.')
+      }
+
       let uploader = await usersModel.find(emailTo)
       let downloader = await usersModel.find(yourEmail)
 
@@ -21,15 +36,6 @@ const uploadController = {
         downloader = await usersModel.create(emailTo, 'DOWNLOADER')
       }
 
-      const files = [fileUpload].map((file) => {
-        return {
-          fileName: file?.filename,
-          size: file?.size,
-          typeOfFile: file?.mimetype,
-          path: file?.path,
-        }
-      })
-
       const expiresAt = expiresAtDate()
 
       const upload = await uploadModel.create(
@@ -37,16 +43,32 @@ const uploadController = {
         message,
         uploader.id,
         downloader.id,
-        expiresAt,
-        files
+        expiresAt
       )
+      const randomId = generateRandomId()
+      const rawFiles = [fileUpload]
+      const key = `${upload.id}/${randomId}`
 
-      res.status(201).json({
-        upload,
+      for (const file of rawFiles) {
+        await s3.upload(key, file.buffer)
+      }
+
+      const files = rawFiles.map((file) => {
+        return {
+          fileName: file?.originalname,
+          size: file?.size,
+          typeOfFile: file?.mimetype,
+          path: key,
+        }
       })
+
+      const updateUPload = await uploadModel.update(upload.id, files)
+
+      res.status(201).json({ updateUPload })
     } catch (error) {
       let message = 'Unkown error'
       if (error instanceof Error) message = error.message
+      console.log(error)
       res.status(500).json({
         message,
       })
