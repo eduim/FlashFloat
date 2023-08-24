@@ -1,35 +1,19 @@
-import { PrismaClient, File} from "@prisma/client"
+import { File } from '@prisma/client'
 
-const prismaInstance = new PrismaClient()
-
+import prisma from '../lib/prisma'
 
 const downloadModel = {
-
-  async findFirst(uploadId:number):
-  Promise<File| null> {
-
-    const result = await prismaInstance.file.findFirst({
+  async findMany(uploadId: number): Promise<File[] | null> {
+    const result = await prisma.file.findMany({
       where: {
-        uploadId:uploadId
-      }
+        uploadId: uploadId,
+      },
     })
     if (!result) {
-      throw new Error ("No record found")
-      
+      throw new Error('No record found')
     }
     return result
-    
-  }
-
-
+  },
 }
 
 export default downloadModel
-
-
-
-
-
-
-
-
