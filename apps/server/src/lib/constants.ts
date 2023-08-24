@@ -12,3 +12,9 @@ if (!process.env.DATABASE_URL) {
 }
 
 export const DATABASE_URL = process.env.DATABASE_URL
+
+if (!process.env.BUCKET_NAME) {
+  throw new Error('missing BUCKET_NAME .env file')
+}
+
+export const BUCKET_NAME = process.env.BUCKET_NAME

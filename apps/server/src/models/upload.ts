@@ -8,8 +8,7 @@ const uploadModel = {
     message: string,
     uploaderId: number,
     downloaderId: number,
-    expiresAt: Date,
-    files: any[]
+    expiresAt: Date
   ): Promise<Upload> {
     const uploadFile = await prismaInstance.upload.create({
       data: {
@@ -26,16 +25,27 @@ const uploadModel = {
             id: downloaderId,
           },
         },
-        files: {
-          createMany: {
-            data: files,
-          },
-        },
+       
       },
     })
 
     return uploadFile
   },
+
+  async update(uploadId, files) {
+    const updateUpload = await prismaInstance.upload.update({
+      where: {
+        id: uploadId
+      }
+      data: {
+        files: {
+          createMany: {
+            data: files 
+          }
+        }
+      }
+    })
+  }
 }
 
 export default uploadModel

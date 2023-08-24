@@ -9,3 +9,10 @@ export type Upload = {
   }
   file: File[]
 }
+
+export type File = {
+  fileName: string
+  size: number
+  typeOfFile: string
+  path: string
+}
