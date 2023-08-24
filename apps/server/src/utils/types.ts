@@ -10,9 +10,12 @@ export type Upload = {
   file: File[]
 }
 
-export type FileType = {
+export type File = {
+  id: number
+  uploadedAt: Date
   fileName: string
   size: number
   typeOfFile: string
   path: string
+  uploadId: number
 }
