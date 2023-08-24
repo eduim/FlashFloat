@@ -7,15 +7,12 @@ export type Upload = {
   downloader: {
     email: string
   }
-  file: File[]
+  file: FileType[]
 }
 
-export type File = {
-  id: number
-  uploadedAt: Date
+export type FileType = {
   fileName: string
   size: number
   typeOfFile: string
   path: string
-  uploadId: number
 }
