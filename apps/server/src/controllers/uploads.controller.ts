@@ -4,6 +4,7 @@ import uploadModel from '../models/upload'
 import expiresAtDate from '../lib/expires'
 import generateRandomId from '../lib/randomId'
 import s3 from '../lib/s3'
+import { FileType } from '../utils/types'
 
 const uploadController = {
   async upload(req: Request, res: Response) {
@@ -45,22 +46,22 @@ const uploadController = {
         downloader.id,
         expiresAt
       )
-      const randomId = generateRandomId()
+
       const rawFiles = [fileUpload]
-      const key = `${upload.id}/${randomId}`
+      const files: FileType[] = []
 
       for (const file of rawFiles) {
+        const randomId = generateRandomId()
+        const key = `${upload.id}/${randomId}`
         await s3.upload(key, file.buffer)
-      }
 
-      const files = rawFiles.map((file) => {
-        return {
+        files.push({
           fileName: file?.originalname,
           size: file?.size,
           typeOfFile: file?.mimetype,
           path: key,
-        }
-      })
+        })
+      }
 
       const updateUPload = await uploadModel.update(upload.id, files)
 
