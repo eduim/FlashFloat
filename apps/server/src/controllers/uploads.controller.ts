@@ -28,10 +28,8 @@ const uploadController = {
         throw new Error('Bad request.')
       }
 
-      console.log('here =================>')
       let uploader = await usersModel.find(emailTo)
       let downloader = await usersModel.find(yourEmail)
-      console.log('here 2 =================>')
 
       if (!uploader || !downloader) {
         uploader = await usersModel.create(yourEmail, 'UPLOADER')
