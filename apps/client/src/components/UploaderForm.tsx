@@ -8,11 +8,11 @@ function UploaderForm() {
   const [yourEmail, setYourEmail] = useState<string>("");
   const [title, setTitle] = useState<string>("");
   const [message, setMessage] = useState<string>("");
-  const [fileUpload, setFileUpload] = useState<File | null>(null);
+  const [fileUpload, setFileUpload] = useState<FileList | null>(null);
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
-      setFileUpload(event.target.files[0]);
+      setFileUpload(event.target.files);
     }
   };
   const handleTransfer = async (event: React.ChangeEvent<HTMLFormElement>) => {
@@ -25,7 +25,10 @@ function UploaderForm() {
     uploadData.append("message", message);
     try {
       if (fileUpload) {
-        uploadData.append("fileUpload", fileUpload);
+        Array.from(fileUpload).forEach((file) => {
+          uploadData.append("fileUpload", file);
+        });
+
         console.log("here");
         const uploadResponse = await fetch("http://localhost:8080/upload", {
           method: "POST",
@@ -48,7 +51,12 @@ function UploaderForm() {
       >
         <Label htmlFor="">Upload File</Label>
 
-        <Input type="file" name="fileUpload" onChange={handleFileChange} />
+        <Input
+          type="file"
+          name="fileUpload"
+          multiple
+          onChange={handleFileChange}
+        />
         <Label>Email to</Label>
 
         <Input
