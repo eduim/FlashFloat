@@ -29,11 +29,15 @@ function UploaderForm() {
           uploadData.append("fileUpload", file);
         });
 
-        console.log("here");
         const uploadResponse = await fetch("http://localhost:8080/upload", {
           method: "POST",
           body: uploadData,
         });
+        //setFileUpload([])
+        setEmailTo('')
+        setYourEmail('')
+        setTitle('')
+        setMessage('')
         if (uploadResponse.status === 201) {
           console.log("Your upload has been sent");
         }
