@@ -5,6 +5,7 @@ import expiresAtDate from '../lib/expires'
 import generateRandomId from '../lib/randomId'
 import s3 from '../lib/s3'
 import { FileType } from '../utils/types'
+import { notifyDownloader, notifyUploader } from '../contact/email'
 
 const uploadController = {
   async upload(req: Request, res: Response) {
@@ -32,8 +33,10 @@ const uploadController = {
       let uploader = await usersModel.find(emailTo)
       let downloader = await usersModel.find(yourEmail)
 
-      if (!uploader || !downloader) {
+      if (!uploader) {
         uploader = await usersModel.create(yourEmail, 'UPLOADER')
+      }
+      if (!downloader) {
         downloader = await usersModel.create(emailTo, 'DOWNLOADER')
       }
 
@@ -64,6 +67,9 @@ const uploadController = {
       }
 
       const updateUPload = await uploadModel.update(upload.id, files)
+
+      await notifyDownloader(yourEmail, emailTo, title, message)
+      await notifyUploader(yourEmail, emailTo, 'File sent')
 
       res.status(201).json({ updateUPload })
     } catch (error) {
