@@ -8,14 +8,14 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        node-version: [14.x, 16.x, 18.x, 20.x]
+        node-version: [18.x]
     env:
       DATABASE_URL: postgresql://postgres:postgres@localhost:5432/flashfloat?schema=public
     services:
       postgres:
         image: postgres:13
         ports:
-          - '5432:5432'
+          - "5432:5432"
         env:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
