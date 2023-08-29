@@ -5,7 +5,7 @@ import expiresAtDate from '../lib/expires'
 import generateRandomId from '../lib/randomId'
 import s3 from '../lib/s3'
 import { FileType } from '../utils/types'
-import { notifyDownloader, notifyUploader } from '../contact/email'
+import { notifyDownloader, notifyUploader } from '../lib/email'
 
 import archiver from 'archiver'
 

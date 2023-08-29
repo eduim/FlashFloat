@@ -14,14 +14,20 @@ export type EmailContact = {
   message?: string
 }
 
-const constructMessage = (title?: string, message?: string) => {
+const constructMessage = (
+  downloadUrl: string,
+  title?: string,
+  message?: string
+) => {
   return `
     ${title} \n
-    ${message || ''} 
+    ${message || ''} \n
+    ${downloadUrl}
     `
 }
 
 export const notifyDownloader = async (
+  uploadId: string,
   uploaderEmail: string,
   downloaderEmail: string,
   title?: string,
@@ -34,7 +40,11 @@ export const notifyDownloader = async (
       },
       content: {
         title: `${uploaderEmail} contacted you in flashfloat!`,
-        body: constructMessage(title, message),
+        body: constructMessage(
+          `http://localhost:3000/download/${uploadId}`,
+          title,
+          message
+        ),
       },
       routing: {
         method: 'single',
@@ -57,7 +67,7 @@ export const notifyUploader = async (
       },
       content: {
         title: `You have sent some files to ${downloaderEmail}`,
-        body: constructMessage(title, message),
+        body: constructMessage('', title, message),
       },
       routing: {
         method: 'single',

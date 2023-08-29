@@ -5174,11 +5174,7 @@ read-cache@^1.0.0:
   dependencies:
     pify "^2.3.0"
 
-<<<<<<< HEAD
-readable-stream@^2.2.2, readable-stream@~2.3.6:
-=======
-readable-stream@^2.0.0, readable-stream@^2.0.5, readable-stream@^2.2.2:
->>>>>>> 0a8615b (refactor/server: upload/download controller/model unified)
+readable-stream@^2.0.0, readable-stream@^2.0.5, readable-stream@^2.2.2, readable-stream@~2.3.6:
   version "2.3.8"
   resolved "https://registry.npmjs.org/readable-stream/-/readable-stream-2.3.8.tgz"
   integrity sha512-8p0AUk4XODgIewSi0l8Epjs+EVnWiK7NoDIEGU0HhE7+ZyY8D1IMY7odu5lRrFXGg71L15KG8QrPmum45RTtdA==
