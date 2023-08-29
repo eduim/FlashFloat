@@ -1,7 +1,7 @@
 import { Request, Response } from 'express'
 import downloadModel from '../models/download'
 import s3 from '../lib/s3'
-import JSZip from 'jszip'
+import archiver from 'archiver'
 
 const downloadController = {
   async download(req: Request, res: Response) {
@@ -17,9 +17,17 @@ const downloadController = {
         throw new Error('Files not found')
       }
 
-      const promises = files.map(async (file) => {
+      const zip = archiver('zip')
+      zip.pipe(res)
+
+      for (const file of files) {
         const fileBuffer = await s3.download(file.path)
-        if (!fileBuffer) {
+
+        if (fileBuffer) {
+          zip.append(fileBuffer, {
+            name: file.fileName,
+          })
+        } else {
           throw new Error('Error downloading file')
         }
         return {
@@ -45,6 +53,7 @@ const downloadController = {
       } else {
         throw new Error('No files available for download')
       }
+      zip.finalize()
     } catch (error) {
       if (error instanceof Error) {
         res.status(500).json({ message: error.message })

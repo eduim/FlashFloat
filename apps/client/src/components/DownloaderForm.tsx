@@ -18,11 +18,11 @@ function DownloaderForm() {
 
       if (response.ok) {
         const blob = await response.blob();
-        const fileName = `${uploadId}`;
+
         const url = URL.createObjectURL(blob);
         const a = document.createElement("a");
         a.href = url;
-        a.download = fileName;
+        a.download = `${uploadId}.zip`;
         a.click();
         URL.revokeObjectURL(url);
       } else {
