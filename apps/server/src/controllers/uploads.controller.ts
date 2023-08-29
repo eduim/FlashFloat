@@ -68,7 +68,13 @@ const uploadController = {
 
       const updateUPload = await uploadModel.update(upload.id, files)
 
-      await notifyDownloader(yourEmail, emailTo, title, message)
+      await notifyDownloader(
+        upload.id.toString(),
+        yourEmail,
+        emailTo,
+        title,
+        message
+      )
       await notifyUploader(yourEmail, emailTo, 'File sent')
 
       res.status(201).json({ updateUPload })
