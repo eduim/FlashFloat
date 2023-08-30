@@ -1,0 +1,27 @@
+name: Test
+on:
+  pull_request:
+    branches:
+      - main
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [18.x]
+    env:
+      DATABASE_URL: postgresql://postgres:postgres@localhost:5432/flashfloat?schema=public
+      PORT: 8080
+      AWS_ACCESS_KEY_ID: test
+      AWS_SECRET_ACCESS_KEY: test
+      AWS_REGION: test
+      BUCKET_NAME: test
+      COURIER_PROD_API_KEY: test
+    steps:
+      - uses: actions/checkout@v3
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+      - run: yarn
+      - run: yarn test
