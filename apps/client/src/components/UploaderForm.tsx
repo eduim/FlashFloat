@@ -2,8 +2,10 @@ import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import UploadSuccessModal from "./UploadSuccessModal";
 
 function UploaderForm() {
+  const [showModal, setShowModal] = useState(false);
   const [emailTo, setEmailTo] = useState<string>("");
   const [yourEmail, setYourEmail] = useState<string>("");
   const [title, setTitle] = useState<string>("");
@@ -34,17 +36,22 @@ function UploaderForm() {
           body: uploadData,
         });
         //setFileUpload([])
-        setEmailTo('')
-        setYourEmail('')
-        setTitle('')
-        setMessage('')
+        setEmailTo("");
+        setYourEmail("");
+        setTitle("");
+        setMessage("");
         if (uploadResponse.status === 201) {
           console.log("Your upload has been sent");
+          setShowModal(true);
         }
       }
     } catch (error) {
       console.error("Transfer failed");
     }
+  };
+
+  const closeModal = (): void => {
+    setShowModal(false);
   };
 
   return (
@@ -104,6 +111,7 @@ function UploaderForm() {
           Transfer
         </Button>
       </form>
+      <UploadSuccessModal isOpen={showModal} onClose={closeModal} />
     </div>
   );
 }
