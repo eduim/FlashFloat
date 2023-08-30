@@ -1,6 +1,6 @@
-import { PrismaClient, Upload } from '@prisma/client'
+import { Upload, File } from '@prisma/client'
 import { FileType } from '../utils/types'
-const prismaInstance = new PrismaClient()
+import prisma from '../lib/prisma'
 
 const uploadModel = {
   async create(
@@ -10,7 +10,7 @@ const uploadModel = {
     downloaderId: number,
     expiresAt: Date
   ): Promise<Upload> {
-    const uploadFile = await prismaInstance.upload.create({
+    const uploadFile = await prisma.upload.create({
       data: {
         title,
         message,
@@ -32,7 +32,7 @@ const uploadModel = {
   },
 
   async update(uploadId: number, files: FileType[]): Promise<Upload> {
-    const updateUpload = await prismaInstance.upload.update({
+    const updateUpload = await prisma.upload.update({
       where: {
         id: uploadId,
       },
@@ -45,6 +45,18 @@ const uploadModel = {
       },
     })
     return updateUpload
+  },
+
+  async findMany(uploadId: number): Promise<File[] | null> {
+    const result = await prisma.file.findMany({
+      where: {
+        uploadId: uploadId,
+      },
+    })
+    if (!result) {
+      throw new Error('No record found')
+    }
+    return result
   },
 }
 

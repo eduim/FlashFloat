@@ -1,7 +1,6 @@
 import express from 'express'
 import uploadController from './controllers/uploads.controller'
 import multer from 'multer'
-import downloadController from './controllers/downloads.controllers'
 
 const upload = multer({ storage: multer.memoryStorage() })
 
@@ -13,6 +12,6 @@ router.get('/', (_, res) => {
 
 router.post('/upload', upload.array('fileUpload'), uploadController.upload)
 
-router.get('/download/:uploadId', downloadController.download)
+router.get('/download/:uploadId', uploadController.download)
 
 export default router
