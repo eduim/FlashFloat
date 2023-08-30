@@ -90,10 +90,11 @@ const uploadController = {
     }
   },
   async download(req: Request, res: Response) {
+    console.log('here')
     try {
       const { uploadId } = req.params
       if (!uploadId) {
-        throw new Error('Enter a file ID')
+        throw new Error('Enter a upload ID')
       }
 
       const files = await uploadModel.findMany(parseInt(uploadId))
@@ -107,7 +108,6 @@ const uploadController = {
 
       for (const file of files) {
         const fileBuffer = await s3.download(file.path)
-
         if (fileBuffer) {
           zip.append(fileBuffer, {
             name: file.fileName,

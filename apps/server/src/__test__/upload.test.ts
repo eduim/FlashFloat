@@ -1,4 +1,4 @@
-import { expect, test, vi, beforeEach, afterEach } from 'vitest'
+import { expect, test, describe, vi, beforeEach, afterEach } from 'vitest'
 import request from 'supertest'
 import path from 'node:path'
 import startServer from '../app'
@@ -7,12 +7,9 @@ import fs from 'node:fs'
 import { notifyUploader, notifyDownloader } from '../lib/email'
 import s3 from '../lib/s3'
 
-const app = startServer()
-
 beforeEach(() => {
   vi.mock('../lib/s3')
   vi.mock('../lib/email')
-
   s3.upload = vi.fn()
   s3.download = vi.fn()
 })
@@ -21,79 +18,109 @@ afterEach(() => {
   vi.clearAllMocks()
 })
 
-test('POST /upload', async () => {
-  const emailTo = 'test@test.com'
-  const yourEmail = 'test2@test.com'
-  const title = 'testTitle'
-  const message = 'testMessage'
+const app = startServer()
 
-  const response = await request(app)
-    .post('/upload')
-    .field('emailTo', emailTo)
-    .field('yourEmail', yourEmail)
-    .field('title', title)
-    .field('message', message)
-    .attach('fileUpload', path.resolve(__dirname, 'testScreenShoot.png'))
+test('GET /', async () => {
+  const response = await request(app).get('/')
 
-  const uploadId = response.body.updateUPload.id
-  const files = await fileModel.findFiles(uploadId)
+  expect(response.statusCode).toBe(200)
+  expect(response.body).toBe('hello')
+})
 
-  if (files) {
-    files.forEach((file) => {
-      expect(file).toMatchObject({
-        id: expect.any(Number),
-        uploadedAt: expect.any(Date),
-        fileName: 'testScreenShoot.png',
-        size: expect.any(Number),
-        typeOfFile: 'image/png',
-        path: expect.any(String),
-        uploadId: uploadId,
+describe('POST /upload', () => {
+  test('Handle when no files', async () => {
+    const response = await request(app).post('/upload')
+    expect(response.statusCode).toBe(500)
+    expect(response.body.message).toBe('no file uploaded')
+  })
+  test('Handle when no body fields', async () => {
+    const response = await request(app)
+      .post('/upload')
+      .attach('fileUpload', path.resolve(__dirname, 'testScreenShoot.png'))
+    expect(response.statusCode).toBe(500)
+    expect(response.body.message).toBe('bad request')
+  })
+
+  test('Handle upload file', async () => {
+    const emailTo = 'test@test.com'
+    const yourEmail = 'test2@test.com'
+    const title = 'testTitle'
+    const message = 'testMessage'
+
+    const response = await request(app)
+      .post('/upload')
+      .attach('fileUpload', path.resolve(__dirname, 'testScreenShoot.png'))
+      .field({
+        emailTo,
+        yourEmail,
+        title,
+        message,
       })
-    })
-  }
-  expect(s3.upload).toHaveBeenCalledTimes(1)
-  expect(notifyUploader).toHaveBeenCalledTimes(1)
-  expect(notifyDownloader).toHaveBeenCalledWith(
-    uploadId.toString(),
-    yourEmail,
-    emailTo,
-    title,
-    message
-  )
-  expect(notifyUploader).toBeCalledWith(yourEmail, emailTo, 'File sent')
-  expect(notifyDownloader).toHaveBeenCalledTimes(1)
 
-  expect(response.status).toBe(201)
-  expect(response.body).toMatchObject({
-    updateUPload: {
-      id: expect.any(Number),
-      uploadedAt: expect.any(String),
+    const uploadId = response.body.updateUPload.id
+
+    const files = await fileModel.findFiles(uploadId)
+
+    if (files) {
+      files.forEach((file) => {
+        expect(file).toMatchObject({
+          id: expect.any(Number),
+          uploadedAt: expect.any(Date),
+          fileName: 'testScreenShoot.png',
+          size: expect.any(Number),
+          typeOfFile: 'image/png',
+          path: expect.any(String),
+          uploadId: uploadId,
+        })
+      })
+    }
+    expect(s3.upload).toHaveBeenCalledTimes(1)
+    expect(notifyDownloader).toHaveBeenCalledTimes(1)
+    expect(notifyUploader).toHaveBeenCalledTimes(1)
+
+    expect(notifyDownloader).toHaveBeenCalledWith(
+      uploadId.toString(),
+      yourEmail,
+      emailTo,
       title,
-      message,
-      expiresAt: expect.any(String),
-      uploaderId: expect.any(Number),
-      downloaderId: expect.any(Number),
-    },
+      message
+    )
+
+    expect(notifyUploader).toHaveBeenCalledWith(yourEmail, emailTo, 'File sent')
+
+    expect(response.body).toMatchObject({
+      updateUPload: {
+        id: expect.any(Number),
+        uploadedAt: expect.any(String),
+        title,
+        message,
+        expiresAt: expect.any(String),
+        uploaderId: expect.any(Number),
+        downloaderId: expect.any(Number),
+      },
+    })
+    expect(response.status).toBe(201)
   })
 })
 
-test('GET /download/:uploadId', async () => {
-  const uploadId = 1
-  const storagedFiles = await fileModel.findFiles(uploadId)
-  let s3Path
+describe('GET /download', () => {
+  test('Handle download file', async () => {
+    const uploadId = 1
+    const storagedFiles = await fileModel.findFiles(uploadId)
 
-  if (storagedFiles) {
-    s3Path = storagedFiles[0].path
-  }
-  const fileServer = path.resolve(__dirname, 'testScreenShoot.png')
-  const fileContentServer = fs.readFileSync(fileServer)
-  const fileBufferServer = Buffer.from(fileContentServer)
+    let s3path
+    if (storagedFiles) {
+      s3path = storagedFiles[0].path
+    }
 
-  s3.download = vi.fn().mockResolvedValueOnce(fileBufferServer)
+    const pathServer = path.resolve(__dirname, 'testScreenShoot.png')
+    const fileServer = fs.readFileSync(pathServer)
 
-  const response = await request(app).get(`/download/${uploadId}`)
+    s3.download = vi.fn().mockResolvedValue(fileServer)
 
-  expect(s3.download).toBeCalledTimes(1)
-  expect(s3.download).toBeCalledWith(s3Path)
-  expect(response.status).toBe(200)
+    const response = await request(app).get(`/download/${uploadId}`)
+    expect(s3.download).toBeCalledTimes(1)
+    expect(s3.download).toBeCalledWith(s3path)
+    expect(response.status).toBe(200)
+  })
 })
