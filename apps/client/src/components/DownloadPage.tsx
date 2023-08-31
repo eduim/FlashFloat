@@ -1,4 +1,6 @@
+import { server } from "@/lib/constants";
 import { useParams } from "react-router-dom";
+
 
 function DownloadPage() {
   const { uploadId } = useParams();
@@ -6,7 +8,7 @@ function DownloadPage() {
   const handleDownload = async () => {
     try {
       const response = await fetch(
-        `http://localhost:8080/download/${uploadId}`,
+        `${server}/download/${uploadId}`,
         {
           method: "GET",
         }

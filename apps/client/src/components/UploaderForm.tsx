@@ -3,6 +3,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import UploadSuccessModal from "./UploadSuccessModal";
+import { server } from "@/lib/constants";
 
 function UploaderForm() {
   const [showModal, setShowModal] = useState(false);
@@ -31,7 +32,7 @@ function UploaderForm() {
           uploadData.append("fileUpload", file);
         });
 
-        const uploadResponse = await fetch("http://localhost:8080/upload", {
+        const uploadResponse = await fetch(`${server}/upload`, {
           method: "POST",
           body: uploadData,
         });
