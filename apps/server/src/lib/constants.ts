@@ -28,3 +28,9 @@ if (
     'missing AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_REGION in .env file'
   )
 }
+
+if (!process.env.CLIENT) {
+  throw new Error('missing CLIENT in .env file')
+}
+
+export const client = process.env.CLIENT

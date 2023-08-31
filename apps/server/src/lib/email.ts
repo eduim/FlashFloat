@@ -1,4 +1,5 @@
 import { CourierClient } from '@trycourier/courier'
+import { client } from './constants'
 
 if (!process.env.COURIER_PROD_API_KEY)
   throw new Error('missing Courier api key')
@@ -41,7 +42,7 @@ export const notifyDownloader = async (
       content: {
         title: `${uploaderEmail} contacted you in flashfloat!`,
         body: constructMessage(
-          `http://localhost:3000/download/${uploadId}`,
+          `${client}/download/${uploadId}`,
           title,
           message
         ),
