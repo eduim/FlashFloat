@@ -1,11 +1,7 @@
-import React, { useState } from "react";
+import { useParams } from "react-router-dom";
 
-function DownloaderForm() {
-  const [uploadId, setUploadId] = useState("");
-
-  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setUploadId(event.target.value);
-  };
+function DownloadPage() {
+  const { uploadId } = useParams();
 
   const handleDownload = async () => {
     try {
@@ -36,13 +32,9 @@ function DownloaderForm() {
   return (
     <div>
       <h2>Download Files</h2>
-      <label>
-        Enter Upload Id:
-        <input type="text" value={uploadId} onChange={handleInputChange} />
-      </label>
       <button onClick={handleDownload}>Download File</button>
     </div>
   );
 }
 
-export default DownloaderForm;
+export default DownloadPage;
