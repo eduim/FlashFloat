@@ -9,7 +9,7 @@ const router = createBrowserRouter([
     element: <UploaderForm />,
   },
   {
-    path: "/download/:id",
+    path: "/download/:uploadId",
     element: <DownloadPage />,
   },
 ]);
