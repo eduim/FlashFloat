@@ -1,9 +1,5 @@
-import dotenv from 'dotenv'
-dotenv.config()
-
-if (!process.env.server) {
-  throw new Error('missing SERVER in .env file')
+if (!import.meta.env.VITE_SERVER) {
+  throw new Error("missing VITE_SERVER in .env file");
 }
 
-export const server = process.env.SERVER
-
+export const server = import.meta.env.VITE_SERVER;
