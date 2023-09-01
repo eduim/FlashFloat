@@ -1,12 +1,11 @@
 import prisma from '../lib/prisma'
-import { Role, User } from '@prisma/client'
+import { User } from '@prisma/client'
 
 const usersModel = {
-  async create(email: string, role: Role): Promise<User> {
+  async create(email: string): Promise<User> {
     const result = await prisma.user.create({
       data: {
         email,
-        role,
       },
     })
     return result
