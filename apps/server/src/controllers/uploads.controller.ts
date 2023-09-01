@@ -36,12 +36,15 @@ const uploadController = {
       let downloader = await usersModel.find(yourEmail)
 
       if (!uploader) {
-        uploader = await usersModel.create(yourEmail, 'UPLOADER')
+        uploader = await usersModel.create(yourEmail)
       }
       if (!downloader) {
-        downloader = await usersModel.create(emailTo, 'DOWNLOADER')
+        if (emailTo !== yourEmail) {
+          downloader = await usersModel.create(emailTo)
+        } else {
+          downloader = uploader
+        }
       }
-
       const expiresAt = expiresAtDate()
 
       const upload = await uploadModel.create(

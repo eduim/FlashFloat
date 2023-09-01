@@ -13,10 +13,10 @@ datasource db {
 model User {
   id           Int          @id @default(autoincrement())
   email        String       @unique
-  role         Role         @default(UPLOADER)
   uploader     Upload[]     @relation(name: "uploaderRelation")
   downloader   Upload[]     @relation(name: "downloaderRelation")
 }
+  
 
 model File {
   id           Int          @id @default(autoincrement())
@@ -42,7 +42,3 @@ model Upload {
   downloaderId Int
 }
 
-enum Role {
-  UPLOADER
-  DOWNLOADER
-}
