@@ -15,5 +15,9 @@ const router = createBrowserRouter([
 ]);
 
 export default function App() {
-  return <RouterProvider router={router} />;
+  return (
+    <div className="bg-app-background bg-cover  bg-no-repeat bg-center-h-screen">
+      <RouterProvider router={router} />
+    </div>
+  )
 }

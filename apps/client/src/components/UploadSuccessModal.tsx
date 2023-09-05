@@ -10,6 +10,7 @@ const UploadSuccessModal: React.FC<UploadSuccessModalProps> = ({
   isOpen,
   onClose,
 }) => {
+
   return (
     <Modal
       isOpen={isOpen}
@@ -17,9 +18,13 @@ const UploadSuccessModal: React.FC<UploadSuccessModalProps> = ({
       contentLabel="Upload Success"
       ariaHideApp={false} // Important to prevent accessibility issues
     >
-      <h2>Upload Successful!</h2>
-      <p>Your file has been uploaded to Amazon S3.</p>
-      <button onClick={onClose}>Close</button>
+      <div>
+        <h2>Upload Successful!</h2>
+      </div>
+      <div>
+        <p>Your file has been uploaded to Amazon S3.</p>
+        <button onClick={onClose}>Close</button>
+      </div>
     </Modal>
   );
 };
