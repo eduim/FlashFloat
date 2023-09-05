@@ -56,11 +56,8 @@ function UploaderForm() {
   };
 
   return (
-    <div className="">
-      <form
-        className="flex flex-col gap-5 justify-center items-center h-screen max-w-md border p-12 black rounded-xl"
-        onSubmit={handleTransfer}
-      >
+    <div>
+      <form onSubmit={handleTransfer}>
         <Label htmlFor="">Upload File</Label>
 
         <Input
