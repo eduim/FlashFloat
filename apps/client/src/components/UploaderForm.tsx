@@ -29,25 +29,46 @@ function UploaderForm() {
     uploadData.append("message", message);
     try {
       if (fileUpload) {
+        const numberFiles = Object.keys(fileUpload).length;
+
+        let totalSize = 0;
+
         Array.from(fileUpload).forEach((file) => {
           uploadData.append("fileUpload", file);
+          totalSize += file.size;
         });
 
         const uploadResponse = await fetch(`${server}/upload`, {
           method: "POST",
           body: uploadData,
         });
-        //setFileUpload([])
+
+        const responseBody = await uploadResponse.json();
+
+        const expiresAt = new Date(responseBody.updateUPload.expiresAt);
+        console.log(expiresAt)
+
         setEmailTo("");
         setYourEmail("");
         setTitle("");
         setMessage("");
         if (uploadResponse.status === 201) {
-          navigate('/confirmation')
+          navigate("/confirmation", {
+            state: {
+              emailTo,
+              yourEmail,
+              title,
+              message,
+              numberFiles,
+              expiresAt,
+              totalSize
+            },
+          });
         }
+        setFileUpload(null);
       }
     } catch (error) {
-      console.error("Transfer failed");
+      console.error("Transfer failed", error);
     }
   };
 
