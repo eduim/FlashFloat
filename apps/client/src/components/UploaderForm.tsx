@@ -2,16 +2,17 @@ import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import UploadSuccessModal from "./UploadSuccessModal";
 import { server } from "@/lib/constants";
+import { useNavigate } from "react-router-dom";
 
 function UploaderForm() {
-  const [showModal, setShowModal] = useState(false);
   const [emailTo, setEmailTo] = useState<string>("");
   const [yourEmail, setYourEmail] = useState<string>("");
   const [title, setTitle] = useState<string>("");
   const [message, setMessage] = useState<string>("");
   const [fileUpload, setFileUpload] = useState<FileList | null>(null);
+
+  const navigate = useNavigate();
 
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
@@ -42,17 +43,12 @@ function UploaderForm() {
         setTitle("");
         setMessage("");
         if (uploadResponse.status === 201) {
-          console.log("Your upload has been sent");
-          setShowModal(true);
+          navigate('/confirmation')
         }
       }
     } catch (error) {
       console.error("Transfer failed");
     }
-  };
-
-  const closeModal = (): void => {
-    setShowModal(false);
   };
 
   return (
@@ -112,7 +108,6 @@ function UploaderForm() {
           Transfer
         </Button>
       </form>
-      <UploadSuccessModal isOpen={showModal} onClose={closeModal} />
     </div>
   );
 }
