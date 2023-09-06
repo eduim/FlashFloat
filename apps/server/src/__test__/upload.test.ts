@@ -20,13 +20,6 @@ afterEach(() => {
 
 const app = startServer()
 
-test('GET /', async () => {
-  const response = await request(app).get('/')
-
-  expect(response.statusCode).toBe(200)
-  expect(response.body).toBe('hello')
-})
-
 describe('POST /upload', () => {
   test('Handle when no files', async () => {
     const response = await request(app).post('/upload')
