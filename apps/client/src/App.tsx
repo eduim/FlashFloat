@@ -1,43 +1,43 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import VerticalCard from "./components/VerticalCard"; // Import the VerticalCard component
-import UploaderForm from "./components/UploaderForm";
-import DownloadPage from "./components/DownloadPage";
-import UploadConfirmation from "./components/UploadConfirmation";
+import Layout from "./components/Layout";
+import VerticalCard from "./components/VerticalCard";
 import HorizontalCard from "./components/HorizontalCard";
+import UploaderForm from "./components/UploaderForm";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: (
-      <div>
-        <VerticalCard x={310} y={171} w={446} h={640}>
+      <Layout>
+        <VerticalCard>
           <UploaderForm />
         </VerticalCard>
-      </div>
+      </Layout>
     ),
   },
-
   {
     path: "/confirmation",
     element: (
-      <HorizontalCard>
-        <UploadConfirmation />
-      </HorizontalCard>
+      <Layout>
+        <VerticalCard>{/* Content for confirmation page */}</VerticalCard>
+        <HorizontalCard>{/* Content for confirmation page */}</HorizontalCard>
+      </Layout>
     ),
   },
   {
     path: "/download/:uploadId",
     element: (
-      <HorizontalCard x={310} y={171} w={1000} h={640}>
-        <DownloadPage />
-      </HorizontalCard>
+      <Layout>
+        <VerticalCard>{/* Content for download page */}</VerticalCard>
+        <HorizontalCard>{/* Content for download page */}</HorizontalCard>
+      </Layout>
     ),
   },
 ]);
 
 export default function App() {
   return (
-    <div className="bg-app-background bg-cover  bg-no-repeat bg-center min-h-screen">
+    <div className="bg-app-background bg-cover bg-no-repeat bg-center min-h-screen">
       <RouterProvider router={router} />
     </div>
   );
