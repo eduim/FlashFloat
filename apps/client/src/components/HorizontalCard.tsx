@@ -33,7 +33,8 @@ const HorizontalCard: React.FC<CardProps> = ({
     alignItems: "flex-start",
     justifyContent: "flex-start",
     left: x ? `${x}px` : "0",
-    top: y ? `${y}px` : "0",
+    top: "50%", // Center vertically
+    transform: "translateY(-50%)", // Adjust for card's height
     width: w ? `${w}px` : "1276px",
     height: h ? `${h}px` : "690px",
     background: "#323232",
