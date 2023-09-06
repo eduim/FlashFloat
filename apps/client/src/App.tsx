@@ -3,13 +3,16 @@ import Layout from "./components/Layout";
 import VerticalCard from "./components/VerticalCard";
 import HorizontalCard from "./components/HorizontalCard";
 import UploaderForm from "./components/UploaderForm";
+import TransferDetails from "./components/TransferDetails";
+import SendAnotherFile from "./components/SendAnotherFile";
+import DownloadFile from "./components/DownloadFile";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: (
       <Layout>
-        <VerticalCard>
+        <VerticalCard classes="translate-x-[90%]">
           <UploaderForm />
         </VerticalCard>
       </Layout>
@@ -18,14 +21,13 @@ const router = createBrowserRouter([
   {
     path: "/confirmation",
     element: (
-      <Layout>
+      <Layout classes="gap-12">
         <HorizontalCard>
-          numberOfFiles={1}
-          fileSize="33KB" recipientEmail="john.doe@example.com"
-          fileTitle="Summer pics" senderMessage="These are the pictures I took
-          of us."
+          <TransferDetails isSender={true} />
         </HorizontalCard>
-        <VerticalCard>{/* Content for confirmation page */}</VerticalCard>
+        <VerticalCard>
+          <SendAnotherFile />
+        </VerticalCard>
       </Layout>
     ),
   },
@@ -33,8 +35,12 @@ const router = createBrowserRouter([
     path: "/download/:uploadId",
     element: (
       <Layout>
-        <VerticalCard>{/* Content for download page */}</VerticalCard>
-        <HorizontalCard>{/* Content for download page */}</HorizontalCard>
+        <VerticalCard>
+          <DownloadFile />
+        </VerticalCard>
+        <HorizontalCard>
+          <TransferDetails isSender={false} />
+        </HorizontalCard>
       </Layout>
     ),
   },
@@ -42,7 +48,7 @@ const router = createBrowserRouter([
 
 export default function App() {
   return (
-    <div className="bg-app-background bg-cover bg-no-repeat bg-center min-h-screen">
+    <div>
       <RouterProvider router={router} />
     </div>
   );
