@@ -3,6 +3,9 @@ import { useParams } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import { dateFormatter, fileFormatter } from "@/lib/formatter";
 import ellipse from "../assets/Ellipse 1.png";
+import downloadImage from "../assets/plus 1.png"
+import logoBigLight from "../assets/logo big light 1.svg";
+
 
 function DownloadPage() {
   const { uploadId } = useParams();
@@ -36,7 +39,7 @@ function DownloadPage() {
   return (
     <div>
       <div>
-        <div>
+      <div>
           <p>Your transfer details</p>
           <p>
             {" "}
@@ -51,15 +54,19 @@ function DownloadPage() {
           <p>Message</p>
           <p>{message}</p>
         </div>
-      </div>
       <div className="flex flex-col items-center justify-center w-448 h-640 bg-gray-800 bg-opacity-90">
         <div>
           <img src={ellipse} alt="" />
         </div>
         <div>
           <h2>Download Files</h2>
-          <button onClick={handleDownload}>Download File</button>
+          <button className="flex justify-center items-center p-2 bg-yellow-200 rounded-3xl" onClick={handleDownload}> <img src={downloadImage} alt="download Image" />Download File</button>
         </div>
+     
+      </div>
+      </div>
+      <div>
+      <img src={logoBigLight} alt="" />
       </div>
     </div>
   );
