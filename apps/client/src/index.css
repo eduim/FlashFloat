@@ -1,3 +1,7 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+html {
+  @apply bg-app-background bg-cover bg-no-repeat bg-center min-h-screen overflow-hidden;
+}

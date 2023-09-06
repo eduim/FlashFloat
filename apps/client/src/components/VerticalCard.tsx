@@ -2,18 +2,13 @@ import React from "react";
 
 interface CardProps {
   children: React.ReactNode;
-  w?: string;
-  h?: string;
+  classes?: string;
 }
 
-const VerticalCard: React.FC<CardProps> = ({
-  children,
-  w = "w-1/5", // Adjust the width for vertical card
-  h = "h-100",
-}) => {
-  const cardClasses = `bg-black text-white border-2 border-gray-700 p-4 ${w} ${h} ml-auto`;
+const VerticalCard: React.FC<CardProps> = ({ children, classes }) => {
+  const cardClasses = `bg-black text-black border-2 border-gray-700 p-4 bg-opacity-60`;
 
-  return <div className={cardClasses}>{children}</div>;
+  return <div className={`${cardClasses} ${classes}`}>{children}</div>;
 };
 
 export default VerticalCard;
