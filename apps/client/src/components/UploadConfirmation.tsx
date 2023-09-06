@@ -5,7 +5,7 @@ import ellipse from "../assets/Ellipse 1.png"
 
 const UploadConfirmation = () => {
   const location = useLocation();
-  const { yourEmail, title, message, numberFiles, totalSize, expiresAt } =
+  const { emailTo, title, message, numberFiles, totalSize, expiresAt } =
     location.state || {};
   return (
     <div className="flex items-center justify-center h-screen">
@@ -22,7 +22,7 @@ const UploadConfirmation = () => {
               . Expires {dateFormatter(new Date(expiresAt))}
             </p>
             <p>Sending to</p>
-            <p>{yourEmail}</p>
+            <p>{emailTo}</p>
             <p>Title</p>
             <p>{title}</p>
             <p>Message</p>
