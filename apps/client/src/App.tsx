@@ -1,4 +1,3 @@
-
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Layout from "./components/Layout";
 import VerticalCard from "./components/VerticalCard";
@@ -20,8 +19,13 @@ const router = createBrowserRouter([
     path: "/confirmation",
     element: (
       <Layout>
+        <HorizontalCard>
+          numberOfFiles={1}
+          fileSize="33KB" recipientEmail="john.doe@example.com"
+          fileTitle="Summer pics" senderMessage="These are the pictures I took
+          of us."
+        </HorizontalCard>
         <VerticalCard>{/* Content for confirmation page */}</VerticalCard>
-        <HorizontalCard>{/* Content for confirmation page */}</HorizontalCard>
       </Layout>
     ),
   },
