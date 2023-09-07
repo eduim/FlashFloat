@@ -6,12 +6,14 @@ import UploaderForm from "./components/UploaderForm";
 import TransferDetails from "./components/TransferDetails";
 import SendAnotherFile from "./components/SendAnotherFile";
 import DownloadFile from "./components/DownloadFile";
+import Logo from "./components/Logo"
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: (
       <Layout>
+        <Logo/>
         <VerticalCard classes="translate-x-[90%]">
           <UploaderForm />
         </VerticalCard>
@@ -28,19 +30,21 @@ const router = createBrowserRouter([
         <VerticalCard>
           <SendAnotherFile />
         </VerticalCard>
+        <Logo />
       </Layout>
     ),
   },
   {
     path: "/download/:uploadId",
     element: (
-      <Layout>
-        <VerticalCard>
-          <DownloadFile />
-        </VerticalCard>
+      <Layout classes="gap-12">
         <HorizontalCard>
           <TransferDetails isSender={false} />
         </HorizontalCard>
+        <VerticalCard>
+          <DownloadFile />
+        </VerticalCard>
+        <Logo />
       </Layout>
     ),
   },

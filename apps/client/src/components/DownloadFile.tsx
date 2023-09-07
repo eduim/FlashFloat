@@ -2,7 +2,6 @@ import { server } from "@/lib/constants";
 import { useParams } from "react-router-dom";
 import ellipse from "../assets/Ellipse 1.png";
 import downloadImage from "../assets/plus 1.png";
-import logoBigLight from "../assets/logo big light 1.svg";
 
 function DownloadFile() {
   const { uploadId } = useParams();
@@ -49,9 +48,6 @@ function DownloadFile() {
             </button>
           </div>
         </div>
-      </div>
-      <div>
-        <img src={logoBigLight} alt="" />
       </div>
     </div>
   );
