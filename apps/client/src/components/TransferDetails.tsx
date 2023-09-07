@@ -21,28 +21,35 @@ const TransferDetailsDownload: React.FC<ITransferDetailsDownload> = ({
   } = location.state || {};
   return (
     <div>
-      <p>Your transfer details</p>
-      <p>
-        {" "}
-        {fileFormatter(totalSize)} .
-        {numberFiles === 1 ? `${numberFiles} File` : `${numberFiles} Files`}.
-        Expires {dateFormatter(new Date(expiresAt))}
-      </p>
+      <h1 className="text-2xl font-bold mb-4 border-b">Your Transfer Details</h1>
+
       {isSender ? (
-        <>
-          <p>Sending to</p>
+        <div className="mb-4">
+          <p className="font-bold">Sending to</p>
           <p>{emailTo}</p>
-        </>
+        </div>
       ) : (
-        <>
+        <div className="mb-4">
           <p>Sent From</p>
           <p>{yourEmail}</p>
-        </>
+        </div>
       )}
-      <p>Title</p>
-      <p>{title}</p>
-      <p>Message</p>
-      <p>{message}</p>
+      <div className="mb-4">
+        <p className="font-bold">Title</p>
+        <p>{title}</p>
+      </div>
+      <div className="mb-4">
+        <p className="font-bold">Message</p>
+        <p>{message}</p>
+      </div>
+      <div>
+        <p>
+          {" "}
+          {fileFormatter(totalSize)} .
+          {numberFiles === 1 ? `${numberFiles} File` : `${numberFiles} Files`}.
+          Expires {dateFormatter(new Date(expiresAt))}
+        </p>
+      </div>
     </div>
   );
 };

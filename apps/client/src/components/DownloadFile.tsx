@@ -29,25 +29,31 @@ function DownloadFile() {
     }
   };
 
+  const containerStyles = {
+    marginTop: "-40px",
+  };
   return (
-    <div>
+    <div
+      className="flex flex-col items-center justify-center h-full mt-8"
+      style={containerStyles}
+    >
       <div>
-        <div className="flex flex-col items-center justify-center w-448 h-640 bg-gray-800 bg-opacity-90">
-          <div>
-            <img src={ellipse} alt="" />
-          </div>
-          <div>
-            <h2>Download Files</h2>
-            <button
-              className="flex justify-center items-center p-2 bg-yellow-200 rounded-3xl"
-              onClick={handleDownload}
-            >
-              {" "}
-              <img src={downloadImage} alt="download Image" />
-              Download File
-            </button>
-          </div>
-        </div>
+        <img src={ellipse} alt="" className="w-32 h-32" />
+      </div>
+      <div>
+        <h2 className="mt-8 text-white">Transfer Expires in 1 week</h2>
+        <button
+          className="flex justify-center items-center p-1 bg-yellow-200 rounded-xl text-sm mt-10"
+          onClick={handleDownload}
+        >
+          {" "}
+          <img
+            src={downloadImage}
+            alt="download Image"
+            className="w-4 h-4 mr-1"
+          />
+          Download File
+        </button>
       </div>
     </div>
   );
