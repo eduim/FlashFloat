@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { server } from "@/lib/constants";
 import { useNavigate } from "react-router-dom";
 import LoadingButton from "./ui/LoadingButton";
@@ -21,6 +19,7 @@ function UploaderForm() {
       setFileUpload(event.target.files);
     }
   };
+
   const handleTransfer = async (event: React.ChangeEvent<HTMLFormElement>) => {
     event.preventDefault();
     setLoading(true);
@@ -79,52 +78,72 @@ function UploaderForm() {
   return (
     <div>
       <form onSubmit={handleTransfer}>
-        <Label htmlFor="">Upload File</Label>
-
-        <Input
-          type="file"
-          name="fileUpload"
-          multiple
-          onChange={handleFileChange}
-        />
-        <Label>Email to</Label>
-
-        <Input
-          type="text"
-          name="emailTo"
-          value={emailTo}
-          onChange={(e) => setEmailTo(e.target.value)}
-        />
-        <br />
-        <Label>Your Email</Label>
-        <br />
-        <Input
-          type="text"
-          name="YourEmail"
-          value={yourEmail}
-          onChange={(e) => setYourEmail(e.target.value)}
-        />
-        <br />
-        <Label>Title</Label>
-        <br />
-        <Input
-          type="text"
-          name="Title"
-          value={title}
-          onChange={(e) => setTitle(e.target.value)}
-        />
-        <br />
-        <Label>Message</Label>
-        <br />
-        <Input
-          type="text"
-          name="message"
-          value={message}
-          onChange={(e) => setMessage(e.target.value)}
-        />
-        <br />
-        {loading ? ( <LoadingButton />
-          
+        <div className="mb-4">
+          <label className="w-1/5" htmlFor="fileUpload"></label>
+          <label
+            htmlFor="fileInput"
+            className="rounded-full bg-blue-500 text-white py-2 px-4 cursor-pointer"
+          >
+            Add files
+            <input
+              type="file"
+              id="fileInput"
+              className="hidden"
+              multiple
+              onChange={handleFileChange}
+            />
+          </label>
+        </div>
+        <div className="mb-4">
+          <label className="w-1/5" htmlFor="emailTo">
+            Email to
+          </label>
+          <input
+            type="text"
+            id="emailTo"
+            className="border-b border-gray-400 focus:outline-none focus:border-blue-500 bg-transparent"
+            value={emailTo}
+            onChange={(e) => setEmailTo(e.target.value)}
+          />
+        </div>
+        <div className="mb-4">
+          <label className="w-1/5" htmlFor="yourEmail">
+            Your Email
+          </label>
+          <input
+            type="text"
+            id="yourEmail"
+            className="border-b border-gray-400 focus:outline-none focus:border-blue-500 bg-transparent"
+            value={yourEmail}
+            onChange={(e) => setYourEmail(e.target.value)}
+          />
+        </div>
+        <div className="mb-4">
+          <label className="w-1/5" htmlFor="title">
+            Title
+          </label>
+          <input
+            type="text"
+            id="title"
+            className="border-b border-gray-400 focus:outline-none focus:border-blue-500 bg-transparent"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+          />
+        </div>
+        <div className="mb-4">
+          <label className="w-1/5" htmlFor="message">
+            Message
+          </label>
+          <input
+            type="text"
+            id="message"
+            className="border-b border-gray-400 focus:outline-none focus:border-blue-500 bg-transparent"
+            value={message}
+            onChange={(e) => setMessage(e.target.value)}
+          />
+        </div>
+        {loading ? (
+          <LoadingButton />
         ) : (
           <Button
             className="bg-slate-600 rounded-md py-1 px-4 text-white"
