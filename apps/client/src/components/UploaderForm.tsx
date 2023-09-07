@@ -4,6 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { server } from "@/lib/constants";
 import { useNavigate } from "react-router-dom";
+import LoadingButton from "./ui/LoadingButton";
 
 function UploaderForm() {
   const [emailTo, setEmailTo] = useState<string>("");
@@ -11,6 +12,7 @@ function UploaderForm() {
   const [title, setTitle] = useState<string>("");
   const [message, setMessage] = useState<string>("");
   const [fileUpload, setFileUpload] = useState<FileList | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const navigate = useNavigate();
 
@@ -21,6 +23,7 @@ function UploaderForm() {
   };
   const handleTransfer = async (event: React.ChangeEvent<HTMLFormElement>) => {
     event.preventDefault();
+    setLoading(true);
 
     const uploadData = new FormData();
     uploadData.append("emailTo", emailTo);
@@ -46,7 +49,6 @@ function UploaderForm() {
         const responseBody = await uploadResponse.json();
 
         const expiresAt = new Date(responseBody.updateUPload.expiresAt);
-        console.log(expiresAt)
 
         setEmailTo("");
         setYourEmail("");
@@ -61,7 +63,7 @@ function UploaderForm() {
               message,
               numberFiles,
               expiresAt,
-              totalSize
+              totalSize,
             },
           });
         }
@@ -69,6 +71,8 @@ function UploaderForm() {
       }
     } catch (error) {
       console.error("Transfer failed", error);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -119,12 +123,16 @@ function UploaderForm() {
           onChange={(e) => setMessage(e.target.value)}
         />
         <br />
-        <Button
-          className="bg-slate-600 rounded-md py-1 px-4 text-white"
-          type="submit"
-        >
-          Transfer
-        </Button>
+        {loading ? ( <LoadingButton />
+          
+        ) : (
+          <Button
+            className="bg-slate-600 rounded-md py-1 px-4 text-white"
+            type="submit"
+          >
+            Transfer
+          </Button>
+        )}
       </form>
     </div>
   );
