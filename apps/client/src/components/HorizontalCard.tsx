@@ -5,7 +5,7 @@ interface CardProps {
 }
 
 const HorizontalCard: React.FC<CardProps> = ({ children }) => {
-  const cardClasses = `bg-black text-white border-2 border-gray-700 p-4`;
+  const cardClasses = `bg-gray-900  text-white  p-8`;
 
   return <div className={cardClasses}>{children}</div>;
 };

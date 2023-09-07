@@ -1,4 +1,3 @@
-import logoBigLight from "../assets/logo big light 1.svg";
 import ellipse from "../assets/Ellipse 1.png";
 
 const SendAnotherFile = () => {
@@ -15,11 +14,6 @@ const SendAnotherFile = () => {
               <a href="/">Send another</a>
             </div>
           </div>
-        </div>
-        <div className="flex items-center justify-center p-4">
-          <a href="/">
-            <img src={logoBigLight} alt="Logo" />
-          </a>
         </div>
       </div>
     </div>
