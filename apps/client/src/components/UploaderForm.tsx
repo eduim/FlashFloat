@@ -5,35 +5,28 @@ import { useNavigate } from "react-router-dom";
 import LoadingButton from "./ui/LoadingButton";
 
 function UploaderForm() {
-  // State variables
-  const [emailTo, setEmailTo] = useState<string>("");
-  const [yourEmail, setYourEmail] = useState<string>("");
-  const [title, setTitle] = useState<string>("");
-  const [message, setMessage] = useState<string>("");
+  const [emailTo, setEmailTo] = useState("");
+  const [yourEmail, setYourEmail] = useState("");
+  const [title, setTitle] = useState("");
+  const [message, setMessage] = useState("");
   const [fileUpload, setFileUpload] = useState<FileList | null>(null);
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState(false);
 
-  // Selected file names state
   const [selectedFileNames, setSelectedFileNames] = useState<string[] | null>(
     null
   );
 
-  // React Router navigation hook
   const navigate = useNavigate();
 
-  // Function to handle file input change
   const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.files && event.target.files.length > 0) {
-      // Set the selected files in state
       setFileUpload(event.target.files);
 
-      // Extract the file names and store them in state
       const fileNames = Array.from(event.target.files).map((file) => file.name);
       setSelectedFileNames(fileNames);
     }
   };
 
-  // Function to handle the transfer when the form is submitted
   const handleTransfer = async (event: React.ChangeEvent<HTMLFormElement>) => {
     event.preventDefault();
     setLoading(true);
@@ -55,7 +48,6 @@ function UploaderForm() {
           totalSize += file.size;
         });
 
-        // Send the file upload request to the server
         const uploadResponse = await fetch(`${server}/upload`, {
           method: "POST",
           body: uploadData,
@@ -63,9 +55,8 @@ function UploaderForm() {
 
         const responseBody = await uploadResponse.json();
 
-        const expiresAt = new Date(responseBody.updateUPload.expiresAt);
+        const expiresAt = new Date(responseBody.updateUpload.expiresAt);
 
-        // Reset form fields and navigate to confirmation page
         setEmailTo("");
         setYourEmail("");
         setTitle("");
@@ -80,12 +71,12 @@ function UploaderForm() {
               numberFiles,
               expiresAt,
               totalSize,
-              selectedFileNames, // Pass selected file names to the confirmation page
+              selectedFileNames,
             },
           });
         }
         setFileUpload(null);
-        setSelectedFileNames(null); // Reset selected file names
+        setSelectedFileNames(null);
       }
     } catch (error) {
       console.error("Transfer failed", error);
@@ -97,23 +88,20 @@ function UploaderForm() {
   return (
     <div className="p-4">
       <form onSubmit={handleTransfer}>
-        <div className="mb-4">
+        <div className="mb-4 text-center">
           <label
             htmlFor="fileInput"
-            className="block text-gray-700 font-bold mb-2"
+            className="bg-zinc-600 text-white py-2 px-4 rounded-full cursor-pointer inline-flex items-center"
+            style={{ width: "288px", borderRadius: "50px", height: "64px" }}
           >
-            Add files
-          </label>
-          <label
-            htmlFor="fileInput"
-            className="bg-blue-500 text-white py-2 px-4 rounded-full cursor-pointer block"
-          >
-            Add File
+            <span style={{ marginLeft: "auto", marginRight: "auto" }}>
+              Add Files
+            </span>
             <input
               type="file"
               id="fileInput"
               className="hidden"
-              multiple // This allows multiple file selection
+              multiple
               onChange={handleFileChange}
             />
           </label>
@@ -129,73 +117,61 @@ function UploaderForm() {
             </ul>
           </div>
         )}
-        <div className="mb-4">
-          <label
-            htmlFor="emailTo"
-            className="block text-gray-700 font-bold mb-2"
-          >
-            Email to
-          </label>
-          <input
-            type="text"
-            id="emailTo"
-            className="border-b border-gray-400 focus:outline-none focus:border-blue-500 bg-transparent w-full"
-            value={emailTo}
-            onChange={(e) => setEmailTo(e.target.value)}
-          />
+        <div className="mt-16">
+          <div className="mb-4">
+            <input
+              type="text"
+              id="emailTo"
+              className="border-b border-gray-400 focus:outline-none focus:border-blue-500 bg-transparent w-full"
+              value={emailTo}
+              onChange={(e) => setEmailTo(e.target.value)}
+              placeholder="Email to"
+            />
+          </div>
+          <div className="mb-4">
+            <input
+              type="text"
+              id="yourEmail"
+              className="border-b border-gray-400 focus:outline-none focus:border-blue-500 bg-transparent w-full"
+              value={yourEmail}
+              onChange={(e) => setYourEmail(e.target.value)}
+              placeholder="Your Email"
+            />
+          </div>
+          <div className="mb-4">
+            <input
+              type="text"
+              id="title"
+              className="border-b border-gray-400 focus:outline-none focus:border-blue-500 bg-transparent w-full"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              placeholder="Title"
+            />
+          </div>
+          <div className="mb-4">
+            <input
+              type="text"
+              id="message"
+              className="border-b border-gray-400 focus:outline-none focus:border-blue-500 bg-transparent w-full"
+              value={message}
+              onChange={(e) => setMessage(e.target.value)}
+              placeholder="Message"
+            />
+          </div>
+          {loading ? (
+            <LoadingButton />
+          ) : (
+            <div className="mt-32 text-center">
+              <Button
+                className="bg-yellow-100 rounded-full py-2 px-6 text-yellow-400 inline-block"
+                type="submit"
+                style={{ width: "176px", borderRadius: "50px", height: "50px" }}
+              >
+                Send
+              </Button>
+            </div>
+          )}
         </div>
-        <div className="mb-4">
-          <label
-            htmlFor="yourEmail"
-            className="block text-gray-700 font-bold mb-2"
-          >
-            Your Email
-          </label>
-          <input
-            type="text"
-            id="yourEmail"
-            className="border-b border-gray-400 focus:outline-none focus:border-blue-500 bg-transparent w-full"
-            value={yourEmail}
-            onChange={(e) => setYourEmail(e.target.value)}
-          />
-        </div>
-        <div className="mb-4">
-          <label htmlFor="title" className="block text-gray-700 font-bold mb-2">
-            Title
-          </label>
-          <input
-            type="text"
-            id="title"
-            className="border-b border-gray-400 focus:outline-none focus:border-blue-500 bg-transparent w-full"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-          />
-        </div>
-        <div className="mb-4">
-          <label
-            htmlFor="message"
-            className="block text-gray-700 font-bold mb-2"
-          >
-            Message
-          </label>
-          <input
-            type="text"
-            id="message"
-            className="border-b border-gray-400 focus:outline-none focus:border-blue-500 bg-transparent w-full"
-            value={message}
-            onChange={(e) => setMessage(e.target.value)}
-          />
-        </div>
-        {loading ? (
-          <LoadingButton />
-        ) : (
-          <Button
-            className="bg-slate-600 rounded-md py-2 px-6 text-white w-full"
-            type="submit"
-          >
-            Transfer
-          </Button>
-        )}
       </form>
     </div>
   );

@@ -9,8 +9,8 @@ const VerticalCard: React.FC<CardProps> = ({ children, classes }) => {
   const cardClasses = `bg-zinc-950 p-8 bg-opacity-60 rounded-lg`;
 
   const fixedCardStyles = {
-    width: "400px",
-    height: "600px",
+    width: "440px",
+    height: "640px",
   };
   return (
     <div className={`${cardClasses} ${classes}`} style={fixedCardStyles}>

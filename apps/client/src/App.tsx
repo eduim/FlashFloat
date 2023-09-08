@@ -14,7 +14,7 @@ const router = createBrowserRouter([
     element: (
       <Layout>
         <Logo/>
-        <VerticalCard classes="translate-x-[90%]">
+        <VerticalCard classes="translate-x-[60%]">
           <UploaderForm />
         </VerticalCard>
       </Layout>
