@@ -41,27 +41,24 @@ function UploaderForm() {
       if (fileUpload) {
         const numberFiles = Object.keys(fileUpload).length;
 
-        let totalSize = 0;
-
-        Array.from(fileUpload).forEach((file) => {
-          uploadData.append("fileUpload", file);
-          totalSize += file.size;
-        });
+        const totalSize = fileUpload;
 
         const uploadResponse = await fetch(`${server}/upload`, {
           method: "POST",
           body: uploadData,
         });
 
-        const responseBody = await uploadResponse.json();
-
-        const expiresAt = new Date(responseBody.updateUpload.expiresAt);
-
-        setEmailTo("");
-        setYourEmail("");
-        setTitle("");
-        setMessage("");
         if (uploadResponse.status === 201) {
+          const responseBody = await uploadResponse.json();
+          const expiresAt = responseBody.updateUPload.expiresAt;
+          console.log("Server Response:", uploadResponse);
+          console.log("Server Response:", responseBody);
+
+          setEmailTo("");
+          setYourEmail("");
+          setTitle("");
+          setMessage("");
+
           navigate("/confirmation", {
             state: {
               emailTo,
@@ -69,11 +66,13 @@ function UploaderForm() {
               title,
               message,
               numberFiles,
-              expiresAt,
+              expiresAt: expiresAt || "N/A",
               totalSize,
               selectedFileNames,
             },
           });
+        } else {
+          console.error("Transfer failed. Status: ", uploadResponse.status);
         }
         setFileUpload(null);
         setSelectedFileNames(null);
