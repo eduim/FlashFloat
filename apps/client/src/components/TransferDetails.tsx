@@ -19,6 +19,7 @@ const TransferDetailsDownload: React.FC<ITransferDetailsDownload> = ({
     expiresAt,
     emailTo,
   } = location.state || {};
+  console.log("in confirmation", { expiresAt });
   return (
     <div>
       <h1 className="text-2xl font-bold mb-4">Your Transfer Details</h1>
