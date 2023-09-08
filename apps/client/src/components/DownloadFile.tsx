@@ -43,7 +43,7 @@ function DownloadFile() {
       <div>
         <h2 className="mt-8 text-white">Transfer Expires in 1 week</h2>
         <button
-          className="flex justify-center items-center p-1 bg-yellow-200 rounded-xl text-sm mt-10"
+          className="flex justify-center items-center p-5 bg-yellow-200 rounded-xl text-sm mt-10 "
           onClick={handleDownload}
         >
           {" "}
