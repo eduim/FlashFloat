@@ -10,7 +10,7 @@ const VerticalCard: React.FC<CardProps> = ({ children, classes }) => {
 
   const fixedCardStyles = {
     width: "300px", // Adjust this value to your desired width
-    height: "400px", // Adjust this value to your desired height
+    height: "500px", // Adjust this value to your desired height
   };
   return <div className={`${cardClasses} ${classes}`} style={fixedCardStyles}>{children}</div>;
 };

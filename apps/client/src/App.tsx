@@ -13,7 +13,7 @@ const router = createBrowserRouter([
     path: "/",
     element: (
       <Layout>
-        {/* <Logo/> */}
+        <Logo/>
         <VerticalCard classes="translate-x-[90%]">
           <UploaderForm />
         </VerticalCard>
@@ -30,7 +30,7 @@ const router = createBrowserRouter([
         <VerticalCard>
           <SendAnotherFile />
         </VerticalCard>
-        {/* <Logo /> */}
+        <Logo />
       </Layout>
     ),
   },
@@ -44,7 +44,7 @@ const router = createBrowserRouter([
         <VerticalCard>
           <DownloadFile />
         </VerticalCard>
-        {/* <Logo /> */}
+        <Logo />
       </Layout>
     ),
   },
