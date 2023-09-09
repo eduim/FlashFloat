@@ -116,6 +116,28 @@ const uploadController = {
       }
     }
   },
+  async uploadMetadata(req: Request, res: Response) {
+    try {
+      const uploadId = parseInt(req.params.uploadId)
+      const upload = await uploadModel.findById(uploadId)
+      const files = await uploadModel.findMany(uploadId)
+      const totalSize = files!.reduce((size, file) => size + file.size, 0)
+      const uploadData = await uploadModel.getMetadata(uploadId)
+
+      // missing yourEmail, emailTo, numberFiles
+
+      res.json({
+        ...upload,
+        ...uploadData,
+        totalSize,
+      })
+    } catch (e) {
+      const error = e as Error
+      res.status(400).json({
+        error: error.message,
+      })
+    }
+  },
 }
 
 export default uploadController
