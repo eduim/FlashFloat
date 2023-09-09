@@ -41,7 +41,11 @@ function UploaderForm() {
       if (fileUpload) {
         const numberFiles = Object.keys(fileUpload).length;
 
-        const totalSize = fileUpload;
+        let totalSize = 0;
+        Array.from(fileUpload).forEach((file) => {
+          uploadData.append("fileUpload", file);
+          totalSize += file.size;
+        });
 
         const uploadResponse = await fetch(`${server}/upload`, {
           method: "POST",

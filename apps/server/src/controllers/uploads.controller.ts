@@ -32,19 +32,9 @@ const uploadController = {
         throw new Error('Bad request.')
       }
 
-      let uploader = await usersModel.find(emailTo)
-      let downloader = await usersModel.find(yourEmail)
+      const uploader = await usersModel.create(yourEmail)
+      const downloader = await usersModel.create(emailTo)
 
-      if (!uploader) {
-        uploader = await usersModel.create(yourEmail)
-      }
-      if (!downloader) {
-        if (emailTo !== yourEmail) {
-          downloader = await usersModel.create(emailTo)
-        } else {
-          downloader = uploader
-        }
-      }
       const expiresAt = expiresAtDate()
 
       const upload = await uploadModel.create(

@@ -3,8 +3,12 @@ import { User } from '@prisma/client'
 
 const usersModel = {
   async create(email: string): Promise<User> {
-    const result = await prisma.user.create({
-      data: {
+    const result = await prisma.user.upsert({
+      where: {
+        email,
+      },
+      update: {},
+      create: {
         email,
       },
     })
