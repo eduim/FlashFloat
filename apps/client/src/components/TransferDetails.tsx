@@ -1,6 +1,7 @@
-import { useLocation } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import { dateFormatter, fileFormatter } from "@/lib/formatter";
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { server } from "@/lib/constants";
 
 interface ITransferDetailsDownload {
   isSender: boolean;
@@ -9,7 +10,48 @@ interface ITransferDetailsDownload {
 const TransferDetailsDownload: React.FC<ITransferDetailsDownload> = ({
   isSender,
 }) => {
+  const { uploadId } = useParams();
   const location = useLocation();
+  // const {
+  //   yourEmail,
+  //   title,
+  //   message,
+  //   numberFiles,
+  //   totalSize,
+  //   expiresAt,
+  //   emailTo,
+  // } = location.state || {};
+  // console.log("in confirmation", { expiresAt });
+
+  const [downloadData, setDownloadData] = useState(null);
+
+  async function downloadMetadata() {
+    const response = await fetch(`${server}/download/${uploadId}/metadata`);
+    if (!response.ok) {
+      // show error
+      return;
+    }
+
+    const data = await response.json();
+    setDownloadData(data);
+    console.log({ downloadData: data });
+  }
+
+  useEffect(() => {
+    console.log({
+      location: location.state,
+    });
+    if (!location.state) {
+      downloadMetadata();
+    } else {
+      setDownloadData(location.state);
+    }
+  }, []);
+
+  if (!downloadData) {
+    return <div>Loading…</div>;
+  }
+
   const {
     yourEmail,
     title,
@@ -18,8 +60,7 @@ const TransferDetailsDownload: React.FC<ITransferDetailsDownload> = ({
     totalSize,
     expiresAt,
     emailTo,
-  } = location.state || {};
-  console.log("in confirmation", { expiresAt });
+  } = downloadData;
 
   return (
     <div>

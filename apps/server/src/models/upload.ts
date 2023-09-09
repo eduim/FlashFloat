@@ -2,6 +2,12 @@ import { Upload, File } from '@prisma/client'
 import { FileType } from '../utils/types'
 import prisma from '../lib/prisma'
 
+interface UploadMetadata {
+  yourEmail: string
+  emailTo: string
+  numberFiles: number
+}
+
 const uploadModel = {
   async create(
     title: string,
@@ -57,6 +63,42 @@ const uploadModel = {
       throw new Error('No record found')
     }
     return result
+  },
+
+  async findById(uplaodId: number): Promise<Upload> {
+    return await prisma.upload.findUniqueOrThrow({
+      where: {
+        id: uplaodId,
+      },
+    })
+  },
+
+  async getMetadata(uploadId: number): Promise<UploadMetadata> {
+    const uploadData = await prisma.upload.findUniqueOrThrow({
+      where: { id: uploadId },
+      select: {
+        uploader: {
+          select: {
+            email: true,
+          },
+        },
+        downloader: {
+          select: {
+            email: true,
+          },
+        },
+        _count: {
+          select: {
+            files: true,
+          },
+        },
+      },
+    })
+    return {
+      yourEmail: uploadData.uploader.email,
+      emailTo: uploadData.downloader.email,
+      numberFiles: uploadData._count.files,
+    }
   },
 }
 

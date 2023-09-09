@@ -8,6 +8,7 @@ const router = express.Router()
 
 router.post('/upload', upload.array('fileUpload'), uploadController.upload)
 
+router.get('/download/:uploadId/metadata', uploadController.uploadMetadata)
 router.get('/download/:uploadId', uploadController.download)
 
 export default router
