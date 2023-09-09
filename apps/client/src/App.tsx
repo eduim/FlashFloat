@@ -6,15 +6,16 @@ import UploaderForm from "./components/UploaderForm";
 import TransferDetails from "./components/TransferDetails";
 import SendAnotherFile from "./components/SendAnotherFile";
 import DownloadFile from "./components/DownloadFile";
-import Logo from "./components/Logo"
+import Logo from "./components/Logo";
+import LogoMain from "./components/LogoMain";
 
 const router = createBrowserRouter([
   {
     path: "/",
     element: (
       <Layout>
-        <Logo/>
-        <VerticalCard classes="translate-x-[60%]">
+        <LogoMain/>
+        <VerticalCard classes="translate-x-[30%]">
           <UploaderForm />
         </VerticalCard>
       </Layout>
