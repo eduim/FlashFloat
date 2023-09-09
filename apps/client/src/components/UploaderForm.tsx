@@ -125,6 +125,7 @@ function UploaderForm() {
               value={emailTo}
               onChange={(e) => setEmailTo(e.target.value)}
               placeholder="Email to"
+              style={{ color: "#FFFFE0" }}
             />
           </div>
           <div className="mb-4">
@@ -135,6 +136,7 @@ function UploaderForm() {
               value={yourEmail}
               onChange={(e) => setYourEmail(e.target.value)}
               placeholder="Your Email"
+              style={{ color: "#FFFFE0" }}
             />
           </div>
           <div className="mb-4">
@@ -145,6 +147,7 @@ function UploaderForm() {
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               placeholder="Title"
+              style={{ color: "#FFFFE0" }}
             />
           </div>
           <div className="mb-4">
@@ -155,6 +158,7 @@ function UploaderForm() {
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               placeholder="Message"
+              style={{ color: "#FFFFE0" }}
             />
           </div>
           {loading ? (
